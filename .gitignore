@@ -1,0 +1,6 @@
+credentials.txt
+flatfiles.py
+main.py
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup

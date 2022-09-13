@@ -1,0 +1,170 @@
+Id,Race,Class,Role,Faction,First_Expansion
+1,Orc,Warrior,Tank,Horde,Vanilla
+2,Orc,Warrior,Melee DPS,Horde,Vanilla
+3,Orc,Hunter,Ranged DPS,Horde,Vanilla
+4,Orc,Rogue,Melee DPS,Horde,Vanilla
+5,Orc,Shaman,Healer,Horde,Vanilla
+6,Orc,Shaman,Ranged DPS,Horde,Vanilla
+7,Orc,Shaman,Melee DPS,Horde,Vanilla
+8,Orc,Warlock,Ranged DPS,Horde,Vanilla
+9,Tauren,Druid,Tank,Horde,Vanilla
+10,Tauren,Druid,Ranged DPS,Horde,Vanilla
+11,Tauren,Druid,Melee DPS,Horde,Vanilla
+12,Tauren,Druid,Healer,Horde,Vanilla
+13,Tauren,Hunter,Ranged DPS,Horde,Vanilla
+14,Tauren,Shaman,Healer,Horde,Vanilla
+15,Tauren,Shaman,Ranged DPS,Horde,Vanilla
+16,Tauren,Shaman,Melee DPS,Horde,Vanilla
+17,Tauren,Warrior,Tank,Horde,Vanilla
+18,Tauren,Warrior,Melee DPS,Horde,Vanilla
+19,Troll,Druid,Tank,Horde,Vanilla
+20,Troll,Druid,Ranged DPS,Horde,Vanilla
+21,Troll,Druid,Melee DPS,Horde,Vanilla
+22,Troll,Druid,Healer,Horde,Vanilla
+23,Troll,Hunter,Ranged DPS,Horde,Vanilla
+24,Troll,Mage,Ranged DPS,Horde,Vanilla
+25,Troll,Priest,Healer,Horde,Vanilla
+26,Troll,Priest,Ranged DPS,Horde,Vanilla
+27,Troll,Rogue,Melee DPS,Horde,Vanilla
+28,Troll,Shaman,Healer,Horde,Vanilla
+29,Troll,Shaman,Ranged DPS,Horde,Vanilla
+30,Troll,Shaman,Melee DPS,Horde,Vanilla
+31,Troll,Warrior,Tank,Horde,Vanilla
+32,Troll,Warrior,Melee DPS,Horde,Vanilla
+33,Undead,Mage,Ranged DPS,Horde,Vanilla
+34,Undead,Priest,Healer,Horde,Vanilla
+35,Undead,Priest,Ranged DPS,Horde,Vanilla
+36,Undead,Rogue,Melee DPS,Horde,Vanilla
+37,Undead,Warlock,Ranged DPS,Horde,Vanilla
+38,Undead,Warrior,Tank,Horde,Vanilla
+39,Undead,Warrior,Melee DPS,Horde,Vanilla
+40,Dwarf,Hunter,Ranged DPS,Allience,Vanilla
+41,Dwarf,Paladin,Tank,Allience,Vanilla
+42,Dwarf,Paladin,Healer,Allience,Vanilla
+43,Dwarf,Paladin,Melee DPS,Allience,Vanilla
+44,Dwarf,Priest,Healer,Allience,Vanilla
+45,Dwarf,Priest,Ranged DPS,Allience,Vanilla
+46,Dwarf,Rogue,Melee DPS,Allience,Vanilla
+47,Dwarf,Warrior,Tank,Allience,Vanilla
+48,Dwarf,Warrior,Melee DPS,Allience,Vanilla
+49,Gnome,Mage,Ranged DPS,Allience,Vanilla
+50,Gnome,Rogue,Melee DPS,Allience,Vanilla
+51,Gnome,Warlock,Ranged DPS,Allience,Vanilla
+52,Gnome,Warrior,Tank,Allience,Vanilla
+53,Gnome,Warrior,Melee DPS,Allience,Vanilla
+54,Human,Mage,Ranged DPS,Allience,Vanilla
+55,Human,Paladin,Tank,Allience,Vanilla
+56,Human,Paladin,Healer,Allience,Vanilla
+57,Human,Paladin,Melee DPS,Allience,Vanilla
+58,Human,Priest,Healer,Allience,Vanilla
+59,Human,Priest,Ranged DPS,Allience,Vanilla
+60,Human,Rogue,Melee DPS,Allience,Vanilla
+61,Human,Warlock,Ranged DPS,Allience,Vanilla
+62,Human,Warrior,Tank,Allience,Vanilla
+63,Human,Warrior,Melee DPS,Allience,Vanilla
+64,Night Elf,Druid,Tank,Allience,Vanilla
+65,Night Elf,Druid,Ranged DPS,Allience,Vanilla
+66,Night Elf,Druid,Melee DPS,Allience,Vanilla
+67,Night Elf,Druid,Healer,Allience,Vanilla
+68,Night Elf,Hunter,Ranged DPS,Allience,Vanilla
+69,Night Elf,Priest,Healer,Allience,Vanilla
+70,Night Elf,Priest,Ranged DPS,Allience,Vanilla
+71,Night Elf,Rogue,Melee DPS,Allience,Vanilla
+72,Night Elf,Warrior,Tank,Allience,Vanilla
+73,Night Elf,Warrior,Melee DPS,Allience,Vanilla
+74,Draenai,Hunter,Ranged DPS,Allience,TBC
+75,Draenai,Mage,Ranged DPS,Allience,TBC
+76,Draenai,Paladin,Tank,Allience,TBC
+77,Draenai,Paladin,Healer,Allience,TBC
+78,Draenai,Paladin,Melee DPS,Allience,TBC
+79,Draenai,Priest,Healer,Allience,TBC
+80,Draenai,Priest,Ranged DPS,Allience,TBC
+81,Draenai,Shaman,Healer,Allience,TBC
+82,Draenai,Shaman,Ranged DPS,Allience,TBC
+83,Draenai,Shaman,Melee DPS,Allience,TBC
+84,Draenai,Warrior,Tank,Allience,TBC
+85,Draenai,Warrior,Melee DPS,Allience,TBC
+86,Blood Elf,Hunter,Ranged DPS,Horde,TBC
+87,Blood Elf,Mage,Ranged DPS,Horde,TBC
+88,Blood Elf,Paladin,Tank,Horde,TBC
+89,Blood Elf,Paladin,Healer,Horde,TBC
+90,Blood Elf,Paladin,Melee DPS,Horde,TBC
+91,Blood Elf,Priest,Healer,Horde,TBC
+92,Blood Elf,Priest,Ranged DPS,Horde,TBC
+93,Blood Elf,Rogue,Melee DPS,Horde,TBC
+94,Blood Elf,Warlock,Ranged DPS,Horde,TBC
+95,Draenai,Death Knight,Tank,Allience,WOTLK
+96,Dwarf,Death Knight,Tank,Allience,WOTLK
+97,Gnome,Death Knight,Tank,Allience,WOTLK
+98,Human,Death Knight,Tank,Allience,WOTLK
+99,Night Elf,Death Knight,Tank,Allience,WOTLK
+100,Orc,Death Knight,Tank,Horde,WOTLK
+101,Tauren,Death Knight,Tank,Horde,WOTLK
+102,Troll,Death Knight,Tank,Horde,WOTLK
+103,Undead,Death Knight,Tank,Horde,WOTLK
+104,Blood Elf,Death Knight,Tank,Horde,WOTLK
+105,Draenai,Death Knight,Melee DPS,Allience,WOTLK
+106,Dwarf,Death Knight,Melee DPS,Allience,WOTLK
+107,Gnome,Death Knight,Melee DPS,Allience,WOTLK
+108,Human,Death Knight,Melee DPS,Allience,WOTLK
+109,Night Elf,Death Knight,Melee DPS,Allience,WOTLK
+110,Orc,Death Knight,Melee DPS,Horde,WOTLK
+111,Tauren,Death Knight,Melee DPS,Horde,WOTLK
+112,Troll,Death Knight,Melee DPS,Horde,WOTLK
+113,Undead,Death Knight,Melee DPS,Horde,WOTLK
+114,Blood Elf,Death Knight,Melee DPS,Horde,WOTLK
+115,Pandaren,Hunter,Ranged DPS,Horde,MOP
+116,Pandaren,Mage,Ranged DPS,Horde,MOP
+117,Pandaren,Priest,Healer,Horde,MOP
+118,Pandaren,Priest,Ranged DPS,Horde,MOP
+119,Pandaren,Rogue,Melee DPS,Horde,MOP
+120,Pandaren,Shaman,Healer,Horde,MOP
+121,Pandaren,Shaman,Ranged DPS,Horde,MOP
+122,Pandaren,Shaman,Melee DPS,Horde,MOP
+123,Pandaren,Warrior,Tank,Horde,MOP
+124,Pandaren,Warrior,Melee DPS,Horde,MOP
+125,Pandaren,Monk,Tank,Horde,MOP
+126,Pandaren,Monk,Melee DPS,Horde,MOP
+127,Pandaren,Hunter,Ranged DPS,Allience,MOP
+128,Pandaren,Mage,Ranged DPS,Allience,MOP
+129,Pandaren,Priest,Healer,Allience,MOP
+130,Pandaren,Priest,Ranged DPS,Allience,MOP
+131,Pandaren,Rogue,Melee DPS,Allience,MOP
+132,Pandaren,Shaman,Healer,Allience,MOP
+133,Pandaren,Shaman,Ranged DPS,Allience,MOP
+134,Pandaren,Shaman,Melee DPS,Allience,MOP
+135,Pandaren,Warrior,Tank,Allience,MOP
+136,Pandaren,Warrior,Melee DPS,Allience,MOP
+137,Pandaren,Monk,Tank,Allience,MOP
+138,Pandaren,Monk,Melee DPS,Allience,MOP
+139,Blood Elf,Demon Hunter,Tank,Horde,Legion
+140,Blood Elf,Demon Hunter,Melee DPS,Horde,Legion
+141,Night Elf,Demon Hunter,Tank,Allience,Legion
+142,Night Elf,Demon Hunter,Melee DPS,Allience,Legion
+143,Worgen,Death Knight,Tank,Allience,Cata
+144,Worgen,Death Knight,Melee DPS,Allience,Cata
+145,Worgen,Druid,Tank,Allience,Cata
+146,Worgen,Druid,Ranged DPS,Allience,Cata
+147,Worgen,Druid,Melee DPS,Allience,Cata
+148,Worgen,Druid,Healer,Allience,Cata
+149,Worgen,Hunter,Ranged DPS,Allience,Cata
+150,Worgen,Mage,Ranged DPS,Allience,Cata
+151,Worgen,Priest,Healer,Allience,Cata
+152,Worgen,Priest,Ranged DPS,Allience,Cata
+153,Worgen,Rogue,Melee DPS,Allience,Cata
+154,Worgen,Warlock,Ranged DPS,Allience,Cata
+155,Worgen,Warrior,Tank,Allience,Cata
+156,Worgen,Warrior,Melee DPS,Allience,Cata
+157,Goblin,Death Knight,Tank,Horde,Cata
+158,Goblin,Death Knight,Melee DPS,Horde,Cata
+159,Goblin,Hunter,Ranged DPS,Horde,Cata
+160,Goblin,Mage,Ranged DPS,Horde,Cata
+161,Goblin,Priest,Healer,Horde,Cata
+162,Goblin,Priest,Ranged DPS,Horde,Cata
+163,Goblin,Rogue,Melee DPS,Horde,Cata
+164,Goblin,Shaman,Healer,Horde,Cata
+165,Goblin,Shaman,Ranged DPS,Horde,Cata
+166,Goblin,Shaman,Melee DPS,Horde,Cata
+167,Goblin,Warlock,Ranged DPS,Horde,Cata
+168,Goblin,Warrior,Tank,Horde,Cata
+169,Goblin,Warrior,Melee DPS,Horde,Cata

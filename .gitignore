@@ -1,6 +1,6 @@
 credentials.txt
 flatfiles.py
-main.py
+example.py
 .terraform/
 terraform.tfstate
 terraform.tfstate.backup

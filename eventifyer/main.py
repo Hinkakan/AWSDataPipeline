@@ -1,6 +1,5 @@
 import json
 import os
-from urllib import response
 import boto3
 import shutil
 import logging
@@ -84,7 +83,7 @@ def handler(event, context):
     bucket = event["Records"][0]["s3"]["bucket"]["name"]
     obj = event["Records"][0]["s3"]["object"]["key"]
     logger.info(f"Get {obj} from {bucket}...")
-    obj = "data_1662764274.658549.csv"  # Delete for actual lambda
+    obj = "data_1663585237.3305495.csv"  # Delete for actual lambda
     bucket = "stagingbucket010001"  # Delete for actual lambda
     dest = os.path.abspath(os.path.join(cwd, tmpfiles, obj))
 

@@ -1,0 +1,1 @@
+tf-modules\lambda\scripts\create_pkg.bat Eventifyer && tf-modules\lambda\scripts\create_pkg.bat Ingester && terraform apply -auto-approve

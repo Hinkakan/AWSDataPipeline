@@ -1,8 +1,9 @@
 import boto3
 import logging
-import shutil
 import os
 from distutils.log import error
+
+from symbol import try_stmt
 
 # Set up logging
 logging.basicConfig()
@@ -14,23 +15,28 @@ session = boto3.Session(region_name="eu-central-1")
 logger.info("Boto3 session started...")
 
 # Set parameters
-queue_url = "https://sqs.eu-central-1.amazonaws.com/173471538789/PipelineSQSQueue"
+queue_url = os.environ["queue_url"]
 
 def retrieveMessages(sqs_client, queue_url):
 
-    res = sqs_client.receive_message(
-        QueueUrl = queue_url,
-        AttributeNames = [
-            "All"
-        ],
-        MessageAttributeNames = [
-            "_MessageSent"
-        ],
-        MaxNumberOfMessages = 1,
-        VisibilityTimeout = 12,
-        WaitTimeSeconds = 10    # Long polling time
-    )
-    logger.info("Messages received...")
+    try:
+        res = sqs_client.receive_message(
+            QueueUrl = queue_url,
+            AttributeNames = [
+                "All"
+            ],
+            MessageAttributeNames = [
+                "_MessageSent"
+            ],
+            MaxNumberOfMessages = 1,
+            VisibilityTimeout = 12,
+            WaitTimeSeconds = 10    # Long polling time
+        )
+        logger.info("Messages received...")
+    except:
+        logger.info("Error polling for messages...")
+    else:
+        logger.info("SQS call returned...")
 
     return res
 
@@ -62,6 +68,12 @@ def DeleteReceivedMessage(sqs_client, queue_url, receipt_handle):
 
 def handler(event, context):
 
+    # tmp directory create
+    cwd = os.getcwd()
+    parent = os.path.join(cwd, os.pardir)
+    grandparent = os.path.join(parent, os.pardir)
+    tmpfiles = os.path.join(grandparent, "tmp")
+
     ### RETRIEVE MESSAGES
     # Set up client
     sqs = session.client("sqs")
@@ -69,33 +81,11 @@ def handler(event, context):
 
     # Retrieve messages
     res = retrieveMessages(sqs, queue_url)
-    print(res)
-
-    # Write messages to DB
-    #### Spoofing a DB for now
-    def deleteDir(tmpfiles):
-        # Delete any old tmpfiles
-        try:
-            shutil.rmtree(os.path.abspath(tmpfiles), ignore_errors=True)
-        except:
-            logger.info("No files to remove")
-        else:
-            logger.info("Cleaned old files and directory")
-
-    def createDir(tmpfiles):
-        # Create tmp files directory
-        try:
-            os.mkdir(os.path.abspath(tmpfiles))
-        except:
-            logger.debug("Directory already exist")
-        else:
-            logger.info("Created files directory")
-
-    # Set filepaths and create tmp directories
-    cwd = os.getcwd()
-    tmpfiles = os.path.join(cwd,"files")
-    deleteDir(tmpfiles)
-    createDir(tmpfiles)
+    # Check for message content
+    logger.info(res)
+    if "Messages" not in res:
+        logger.info("No new messages, exit function...")
+        return None
 
     payload = res["Messages"][0]["Body"]
     # Create dict from payload string
@@ -115,7 +105,6 @@ def handler(event, context):
     except:
         logger.debug("write to csv failed")
     else:
-        logger.info("Data written to db...")
+        logger.info(f"Data written to db... {filepath}")
         res = DeleteReceivedMessage(sqs, queue_url, receipt_handle)
-
-handler(None, None)
+        

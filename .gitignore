@@ -6,5 +6,5 @@ terraform.tfstate
 terraform.tfstate.backup
 *.zip
 tmp/
-lambda_dist_pkg
-identifyer.zip
+*_lambda_dist_pkg
+.terraform*

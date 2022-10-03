@@ -1,9 +1,6 @@
 import boto3
 import logging
 import os
-from distutils.log import error
-
-from symbol import try_stmt
 
 # Set up logging
 logging.basicConfig()
@@ -33,12 +30,15 @@ def retrieveMessages(sqs_client, queue_url):
             WaitTimeSeconds = 10    # Long polling time
         )
         logger.info("Messages received...")
+    except Exception as e:
+        logger.info(e)
+        raise
     except:
         logger.info("Error polling for messages...")
     else:
         logger.info("SQS call returned...")
+        return res
 
-    return res
 
 def str_to_dict(payload):
     import json
@@ -49,6 +49,32 @@ def str_to_dict(payload):
 
     return payloadjson
 
+def write_to_db(rds_client, payload):
+    
+    cluster_arn = os.environ["cluster_arn"]
+    secret_arn = os.environ["secret_arn"]
+    table = "ds"
+
+    # Build SQL Statement
+    SQL = f"INSERT INTO {table} (Id, Race, Class, Role, Faction, First_Expansion, _MessageSent) VALUES ({payload['Id']}, '{payload['Race']}', '{payload['Class']}', '{payload['Role']}', '{payload['Faction']}', '{payload['First_Expansion']}', '{payload['_MessageSent']}')"
+
+    try:
+        logger.info(f"Writing: {SQL}")
+        rds_client.execute_statement(
+        resourceArn = cluster_arn,
+        secretArn = secret_arn,
+        database = "pipelinedb",
+        sql = SQL
+        )
+    except Exception as e:
+        logger.info("Error when writing to DB...")
+        logger.info(e)
+        raise
+    else:
+        logger.info("Successfully written to db..")
+        return 200
+
+
 def DeleteReceivedMessage(sqs_client, queue_url, receipt_handle):
 
     try:
@@ -58,21 +84,17 @@ def DeleteReceivedMessage(sqs_client, queue_url, receipt_handle):
         )
     except sqs_client.exceptions.ReceiptHandleIsInvalid:
         logger.debug(f"ReceiptHandle {receipt_handle} was invalid")
-    except:
+        raise
+    except Exception as e:
         logger.info("Something went wrong with the delete call...")
-        logger.debug(error)
+        logger(e)
+        raise
     else:
         logger.info("Message deleted from SQS queue...")
         return res
 
 
 def handler(event, context):
-
-    # tmp directory create
-    cwd = os.getcwd()
-    parent = os.path.join(cwd, os.pardir)
-    grandparent = os.path.join(parent, os.pardir)
-    tmpfiles = os.path.join(grandparent, "tmp")
 
     ### RETRIEVE MESSAGES
     # Set up client
@@ -91,20 +113,13 @@ def handler(event, context):
     # Create dict from payload string
     payload = str_to_dict(payload)
     # Add timestamp
-    ts = res["Messages"][0]["MessageAttributes"]["_MessageSent"]
+    ts = res["Messages"][0]["MessageAttributes"]["_MessageSent"]["StringValue"]
     payload["_MessageSent"] = ts
     # Get receipt handle
     receipt_handle = res["Messages"][0]["ReceiptHandle"]
 
-    # Write to DB (Spoof)
-    filepath = os.path.join(tmpfiles,"testdump.csv")
-    try:
-        with open(filepath, "w") as f:
-            for key in payload.keys():
-                f.write("%s,%s\n"%(key,payload[key]))
-    except:
-        logger.debug("write to csv failed")
-    else:
-        logger.info(f"Data written to db... {filepath}")
-        res = DeleteReceivedMessage(sqs, queue_url, receipt_handle)
-        
+    ### WRITE TO DB ###
+    # Initiate Boto Client
+    rds = session.client("rds-data")
+    if write_to_db(rds, payload) == 200:
+        DeleteReceivedMessage(sqs, queue_url, receipt_handle)

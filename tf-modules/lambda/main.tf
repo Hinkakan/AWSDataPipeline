@@ -46,7 +46,7 @@ data "archive_file" "code" {
   output_path ="${var.functionName}.zip"
 }
 
-# Eventifyer lambda
+# lambda Function
 resource "aws_lambda_function" "LambdaFunction" {
     depends_on = [data.archive_file.code]
     function_name = var.functionName
@@ -54,13 +54,11 @@ resource "aws_lambda_function" "LambdaFunction" {
     runtime = "python3.9"
     filename = data.archive_file.code.output_path
     handler = "main.handler"
-    timeout = 20
+    timeout = 35
     source_code_hash = filebase64sha256(data.archive_file.code.output_path)
 
     environment {
-      variables = {
-        queue_url = "${var.PipelineSqsQueueURL}"
-      }
+      variables = var.EnvironmentVars
     }
 }
 

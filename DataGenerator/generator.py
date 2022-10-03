@@ -50,7 +50,7 @@ def sendToS3(filepath, filename):
     except ClientError as e:
         logger.error(e)
     else:
-        logger.info(f"Uploaded file {filename} to S3")
+        logger.info(f"Uploaded file {filename}, containing to S3")
 
 
 def handler():
@@ -62,6 +62,7 @@ def handler():
 
     # Generate 1 to 5 rows of data
     rows = random.randint(1, 5)
+    logger.info(f"Generating {rows} rows of data")
 
     for i in range(rows):
         tmp_df = df     # iloc changes the dataframe, so need to make a copy

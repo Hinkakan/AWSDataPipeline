@@ -1,19 +1,9 @@
-output "rds_endpoint" {
-  description = "Endpoint for the serverless RDS"
-  value = aws_rds_cluster.aurorapostgres.endpoint
+output "rds_cluster_arn" {
+  description = "Cluster arn for the Aurora serverless RDS"
+  value = module.aurora_rds.cluster_arn
 }
 
-output "rds_port" {
-  description = "Port for the serverless RDS"
-  value = aws_rds_cluster.aurorapostgres.port
-}
-
-output "rds_dbname" {
-  description = "Database name for the serverless RDS"
-  value = aws_rds_cluster.aurorapostgres.database_name
-}
-
-output "rds_masterusername" {
-  description = "Master username for the serverless RDS"
-  value = aws_rds_cluster.aurorapostgres.master_username
+output "secret_arn" {
+  description = "secret arn for rds database user credentials"
+  value = module.aurora_rds.secret_arn
 }

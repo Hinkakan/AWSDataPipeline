@@ -6,9 +6,17 @@ env:
 
 phases:
   install:
-    commands: echo Goer klar...
+    commands:
+      - echo Installing pre-requisites
+      - sudo apt update
+      - sudo apt install terraform
+    on-failure:
+      - ABORT
 
   pre_build:
-    commands: echo $MIN_VAR
+    commands:
+      - echo Entering pre-build plase...
+      - echo Validating terraform...
+      - ./tf-modules/lambda/scripts/create_pkg.sh hello
 
   

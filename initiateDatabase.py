@@ -5,7 +5,7 @@ rds = session.client("rds-data")
 secret = session.client("secretsmanager")
 
 cluster_arn = "arn:aws:rds:eu-central-1:173471538789:cluster:aurorapostgres"
-secret_arn = "arn:aws:secretsmanager:eu-central-1:173471538789:secret:dbsecret-jDf6d6"
+secret_arn = "arn:aws:secretsmanager:eu-central-1:173471538789:secret:dbsecret-yqMht1"
 
 secretvalue = secret.get_secret_value(
     SecretId = secret_arn

@@ -24,9 +24,10 @@ phases:
       - echo Entering pre-build plase...
       - echo Packaging lambda code...
       - chmod +x ./tf-modules/lambda/scripts/create_pkg.sh
-      - ./tf-modules/lambda/scripts/create_pkg.sh Eventifyer
-      - ./tf-modules/lambda/scripts/create_pkg.sh Ingester
+      - ./tf-modules/lambda/scripts/create_pkg.sh eventifyer
+      - ./tf-modules/lambda/scripts/create_pkg.sh ingester
       - echo Validating terraform...
       
+
 
   

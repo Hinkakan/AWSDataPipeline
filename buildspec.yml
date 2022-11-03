@@ -5,10 +5,10 @@ env:
     MIN_VAR: "dette er en variabel"
 
 phases:
-  INSTALL:
+  install:
     commands: echo Goer klar...
 
-  PRE_BUILD:
+  pre_build:
     commands: echo $MIN_VAR
 
   

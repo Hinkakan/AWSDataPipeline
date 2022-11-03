@@ -1,8 +1,9 @@
 version: 0.2
 
 env:
-  variables:
-    MIN_VAR: "dette er en variabel"
+  secrets-manager:
+    AWS_ACCESS_KEY_ID: "terraform_user_creds:AWS_ACCESS_KEY_ID"
+    AWS_SECRET_ACCESS_KEY: "terraform_user_creds:AWS_SECRET_ACCESS_KEY"
 
 phases:
   install:
@@ -30,6 +31,11 @@ phases:
       - terraform init
       - echo Validating terraform...
       - terraform validate
+
+    build:
+      commands:
+      - echo Deploying terraform infrastructure...
+      - terraform apply -auto-approve
       
 
 

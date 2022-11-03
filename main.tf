@@ -9,6 +9,12 @@ terraform {
       version = ">= 2.2.0"
     }
   }
+
+  backend "s3" {
+    bucket = "hinkakanterraformbackend"
+    key = "awsdatapipeline"
+    region = "eu-central-1"
+  }
 }
 
 # Configure the AWS Provider

@@ -9,6 +9,6 @@ phases:
     commands: echo Goer klar...
 
   show-var:
-    commands: echo $MIN_VAR
+    commands: echo $MIN_VAR er her
 
   

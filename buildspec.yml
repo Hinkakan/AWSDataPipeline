@@ -21,6 +21,6 @@ phases:
     commands:
       - echo Entering pre-build plase...
       - echo Validating terraform...
-      - sudo /tf-modules/lambda/scripts/ ls
+      - ls
 
   

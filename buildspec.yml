@@ -32,10 +32,10 @@ phases:
       - echo Validating terraform...
       - terraform validate
 
-    build:
-      commands:
-      - echo Deploying terraform infrastructure...
-      - terraform apply -auto-approve
+  build:
+    commands:
+    - echo Deploying terraform infrastructure...
+    - terraform apply -auto-approve
       
 
 

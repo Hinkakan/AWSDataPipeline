@@ -42,7 +42,7 @@ resource "aws_iam_role_policy_attachment" "lambda_role_policy_attachment" {
 data "archive_file" "code" {
   #depends_on = [null_resource.install_python_dependencies]
   type        = "zip"
-  source_dir  = "D:\\Coding\\AWSDataPipeline\\${var.functionName}_lambda_dist_pkg"
+  source_dir  = "${path.root}/${var.functionName}_lambda_dist_pkg"
   output_path ="${var.functionName}.zip"
 }
 

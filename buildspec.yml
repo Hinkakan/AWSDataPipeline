@@ -1,0 +1,14 @@
+version: 0.2
+
+env:
+  variables:
+    MIN_VAR: "dette er en variabel"
+
+phases:
+  set-up:
+    commands: echo Goer klar...
+
+  show-var:
+    commands: echo $MIN_VAR
+
+  

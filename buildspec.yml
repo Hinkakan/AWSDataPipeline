@@ -10,8 +10,6 @@ phases:
       - echo Installing pre-requisites
       - sudo apt update
       - sudo apt install terraform
-    on-failure:
-      - ABORT
 
   pre_build:
     commands:

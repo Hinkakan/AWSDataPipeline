@@ -90,7 +90,7 @@ module "eventifyer_lambda" {
   # ]
   #### This breaks the data.archive thing
   source = ".\\tf-modules\\lambda"
-  functionName = "Eventifyer"
+  functionName = "eventifyer"
   FunctionRolePolicyArn = aws_iam_policy.eventifyer_role_policy.arn
   FunctionLoggingPolicyArn = aws_iam_policy.function_logging_policy.arn
   EnvironmentVars = {
@@ -142,7 +142,7 @@ resource "aws_iam_policy" "ingester_role_policy" {
 
 module "ingester_lambda" {
   source = ".\\tf-modules\\lambda"
-  functionName = "Ingester"
+  functionName = "ingester"
   FunctionRolePolicyArn = aws_iam_policy.ingester_role_policy.arn
   FunctionLoggingPolicyArn = aws_iam_policy.function_logging_policy.arn
   EnvironmentVars = {

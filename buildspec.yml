@@ -27,6 +27,7 @@ phases:
       - ./tf-modules/lambda/scripts/create_pkg.sh eventifyer
       - ./tf-modules/lambda/scripts/create_pkg.sh ingester
       - echo Validating terraform...
+      - terraform validate
       
 
 

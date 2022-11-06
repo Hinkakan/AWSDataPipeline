@@ -180,7 +180,7 @@ resource "aws_iam_policy" "tester_role_policy" {
 }
 
 module "tester_lambda" {
-  source = "-/tf-modules/lambda"
+  source = "./tf-modules/lambda"
   functionName = "tester"
   FunctionRolePolicyArn = aws_iam_policy.tester_role_policy.arn
   FunctionLoggingPolicyArn = aws_iam_policy.function_logging_policy.arn

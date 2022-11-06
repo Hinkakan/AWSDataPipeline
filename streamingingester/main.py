@@ -54,11 +54,11 @@ def handler(event, context):
 
     logger.info(f"Received message: {event}")
     # Parse out data from message
-    payload = event["Records"][0]["body"]
+    payload = event["Records"][0]["body"][0]
     # Create dict from payload string
-    payload = str_to_dict(payload)
+    #payload = str_to_dict(payload)
     # Add timestamp
-    ts = event["Records"][0]["messageAttributes"]["_MessageSent"]["StringValue"]
+    ts = event["Records"][0]["messageAttributes"]["_MessageSent"]["stringValue"]
     payload["_MessageSent"] = ts
 
     ### WRITE TO DB ###

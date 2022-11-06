@@ -55,7 +55,7 @@ def handler(event, context):
 
     logger.info(f"Received message: {event}")
     # Parse out data from message
-    payload = event["Records"][0]["body"][0]
+    payload = event["Records"][0]["body"]
     print(payload)
     # Create dict from payload string
     payload = json.loads(payload)

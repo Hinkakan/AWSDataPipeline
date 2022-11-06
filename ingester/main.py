@@ -26,7 +26,7 @@ def retrieveMessages(sqs_client, queue_url):
                 "_MessageSent"
             ],
             MaxNumberOfMessages = 1,
-            VisibilityTimeout = 12,
+            VisibilityTimeout = 180,
             WaitTimeSeconds = 10    # Long polling time
         )
         logger.info("Messages received...")

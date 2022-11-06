@@ -54,7 +54,7 @@ resource "aws_lambda_function" "LambdaFunction" {
     runtime = "python3.9"
     filename = data.archive_file.code.output_path
     handler = "main.handler"
-    timeout = 35
+    timeout = 30
     source_code_hash = filebase64sha256(data.archive_file.code.output_path)
 
     environment {

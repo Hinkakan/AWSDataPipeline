@@ -158,12 +158,54 @@ module "ingester_lambda" {
   }
 }
 
+#######################################################################################
+### TEST LAMBDA FOR EVENT TRIGGERED ###
+
+resource "aws_iam_policy" "tester_role_policy" {
+  name = "tester_role_policy"
+  policy = jsonencode({
+    Version: "2012-10-17",
+    Statement: [
+      {
+        Action: [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage",
+          "sqs:GetQueueAttributes"
+        ],
+        Effect: "Allow",
+        Resource: "${aws_sqs_queue.PipelineSQSQueue.arn}"
+      }
+    ]
+  })  
+}
+
+module "tester_lambda" {
+  source = "-/tf-modules/lambda"
+  functionName = "tester"
+  FunctionRolePolicyArn = aws_iam_policy.tester_role_policy.arn
+  FunctionLoggingPolicyArn = aws_iam_policy.function_logging_policy.arn
+  EnvironmentVars = {
+    queue_url = aws_sqs_queue.PipelineSQSQueue.url
+    cluster_arn = module.aurora_rds.cluster_arn
+    secret_arn = module.aurora_rds.secret_arn
+  }
+}
+
 # Add trigger to the Lambda
-resource "aws_lambda_event_source_mapping" "ingester_sqs_trigger" {
+resource "aws_lambda_event_source_mapping" "tester_sqs_trigger" {
   event_source_arn = aws_sqs_queue.PipelineSQSQueue.arn
-  function_name = module.ingester_lambda.lambda_function_name
+  function_name = module.tester_lambda.lambda_function_name
   batch_size = 1
 }
+
+#######################################################################################
+
+# # Add trigger to the Lambda
+# resource "aws_lambda_event_source_mapping" "ingester_sqs_trigger" {
+#   event_source_arn = aws_sqs_queue.PipelineSQSQueue.arn
+#   function_name = module.ingester_lambda.lambda_function_name
+#   batch_size = 1
+# }
 
 # Attach policy to lambda role that allows the use of DataApi from RDS cluster
 resource "aws_iam_role_policy_attachment" "DataAPIRolePolicyAttachmentIngester" {

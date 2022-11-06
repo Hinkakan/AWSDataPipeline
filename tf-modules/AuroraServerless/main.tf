@@ -2,7 +2,7 @@
 resource "random_password" "password" {
   length           = 16
   special          = true
-  override_special = "/@"
+  override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
 # Create Serverless Aurora cluster

@@ -158,12 +158,12 @@ module "ingester_lambda" {
   }
 }
 
-# # Add trigger to the Lambda
-# resource "aws_lambda_event_source_mapping" "ingester_sqs_trigger" {
-#   event_source_arn = aws_sqs_queue.PipelineSQSQueue.arn
-#   function_name = module.ingester_lambda.lambda_function_name
-#   batch_size = 1
-# }
+# Add trigger to the Lambda
+resource "aws_lambda_event_source_mapping" "ingester_sqs_trigger" {
+  event_source_arn = aws_sqs_queue.PipelineSQSQueue.arn
+  function_name = module.ingester_lambda.lambda_function_name
+  batch_size = 1
+}
 
 # Attach policy to lambda role that allows the use of DataApi from RDS cluster
 resource "aws_iam_role_policy_attachment" "DataAPIRolePolicyAttachmentIngester" {

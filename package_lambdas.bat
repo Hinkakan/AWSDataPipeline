@@ -1,0 +1,1 @@
+tf-modules\lambda\scripts\create_pkg.bat eventifyer && tf-modules\lambda\scripts\create_pkg.bat batchingester && tf-modules\lambda\scripts\create_pkg.bat streamingingester

@@ -126,10 +126,10 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
   ]
 }
 
-### CREATE INGESTER LAMBDA
+### CREATE BATCHINGESTER LAMBDA
 
-resource "aws_iam_policy" "ingester_role_policy" {
-  name = "ingester_role_policy"
+resource "aws_iam_policy" "batchingester_role_policy" {
+  name = "batchingester_role_policy"
   policy = jsonencode({
     Version: "2012-10-17",
     Statement: [
@@ -146,10 +146,10 @@ resource "aws_iam_policy" "ingester_role_policy" {
   })  
 }
 
-module "ingester_lambda" {
+module "batchingester_lambda" {
   source = "./tf-modules/lambda"
-  functionName = "ingester"
-  FunctionRolePolicyArn = aws_iam_policy.ingester_role_policy.arn
+  functionName = "batchingester"
+  FunctionRolePolicyArn = aws_iam_policy.batchingester_role_policy.arn
   FunctionLoggingPolicyArn = aws_iam_policy.function_logging_policy.arn
   EnvironmentVars = {
     queue_url = aws_sqs_queue.PipelineSQSQueue.url
@@ -158,57 +158,65 @@ module "ingester_lambda" {
   }
 }
 
-#######################################################################################
-### TEST LAMBDA FOR EVENT TRIGGERED ###
-
-resource "aws_iam_policy" "tester_role_policy" {
-  name = "tester_role_policy"
-  policy = jsonencode({
-    Version: "2012-10-17",
-    Statement: [
-      {
-        Action: [
-          "sqs:ReceiveMessage",
-          "sqs:DeleteMessage",
-          "sqs:GetQueueAttributes"
-        ],
-        Effect: "Allow",
-        Resource: "${aws_sqs_queue.PipelineSQSQueue.arn}"
-      }
-    ]
-  })  
+module "batchingester_scheduler" {
+  source = "./tf-modules/EventBridge"
+  cron_expression = "cron(0/5 * * * ? *)"
+  lambda_function_name = module.batchingester_lambda.lambda_function_name
+  lambda_arn = module.batchingester_lambda.lambda_arn
 }
 
-module "tester_lambda" {
-  source = "./tf-modules/lambda"
-  functionName = "tester"
-  FunctionRolePolicyArn = aws_iam_policy.tester_role_policy.arn
-  FunctionLoggingPolicyArn = aws_iam_policy.function_logging_policy.arn
-  EnvironmentVars = {
-    queue_url = aws_sqs_queue.PipelineSQSQueue.url
-    cluster_arn = module.aurora_rds.cluster_arn
-    secret_arn = module.aurora_rds.secret_arn
-  }
-}
-
-# Add trigger to the Lambda
-resource "aws_lambda_event_source_mapping" "tester_sqs_trigger" {
-  event_source_arn = aws_sqs_queue.PipelineSQSQueue.arn
-  function_name = module.tester_lambda.lambda_function_name
-  batch_size = 1
+# Attach policy to lambda role that allows the use of DataApi from RDS cluster
+resource "aws_iam_role_policy_attachment" "DataAPIRolePolicyAttachmentBatchIngester" {
+  role = module.batchingester_lambda.lambda_role_name
+  policy_arn = module.aurora_rds.DataAPIRolePolicyArn
 }
 
 #######################################################################################
+### ONLY HAVE EITHER STREAMINGINGESTER OR BATCHINGESTER ACTIVATED AT A TIME ###
+
+### CREATE STREAMINGINGESTER LAMBDA
+
+# resource "aws_iam_policy" "streamingingester_role_policy" {
+#   name = "streamingingester_role_policy"
+#   policy = jsonencode({
+#     Version: "2012-10-17",
+#     Statement: [
+#       {
+#         Action: [
+#           "sqs:ReceiveMessage",
+#           "sqs:DeleteMessage",
+#           "sqs:GetQueueAttributes"
+#         ],
+#         Effect: "Allow",
+#         Resource: "${aws_sqs_queue.PipelineSQSQueue.arn}"
+#       }
+#     ]
+#   })  
+# }
+
+# module "streamingingester_lambda" {
+#   source = "./tf-modules/lambda"
+#   functionName = "streamingingester"
+#   FunctionRolePolicyArn = aws_iam_policy.streamingingester_role_policy.arn
+#   FunctionLoggingPolicyArn = aws_iam_policy.function_logging_policy.arn
+#   EnvironmentVars = {
+#     queue_url = aws_sqs_queue.PipelineSQSQueue.url
+#     cluster_arn = module.aurora_rds.cluster_arn
+#     secret_arn = module.aurora_rds.secret_arn
+#   }
+# }
 
 # # Add trigger to the Lambda
-# resource "aws_lambda_event_source_mapping" "ingester_sqs_trigger" {
+# resource "aws_lambda_event_source_mapping" "streamingingester_sqs_trigger" {
 #   event_source_arn = aws_sqs_queue.PipelineSQSQueue.arn
-#   function_name = module.ingester_lambda.lambda_function_name
+#   function_name = module.streamingingester_lambda.lambda_function_name
 #   batch_size = 1
 # }
 
-# Attach policy to lambda role that allows the use of DataApi from RDS cluster
-resource "aws_iam_role_policy_attachment" "DataAPIRolePolicyAttachmentIngester" {
-  role = module.ingester_lambda.lambda_role_name
-  policy_arn = module.aurora_rds.DataAPIRolePolicyArn
-}
+# # Attach policy to lambda role that allows the use of DataApi from RDS cluster
+# resource "aws_iam_role_policy_attachment" "DataAPIRolePolicyAttachmentStreamingIngester" {
+#   role = module.streamingingester_lambda.lambda_role_name
+#   policy_arn = module.aurora_rds.DataAPIRolePolicyArn
+# }
+
+#################################

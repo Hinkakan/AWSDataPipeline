@@ -26,8 +26,8 @@ phases:
       - echo Packaging lambda code...
       - chmod +x ./tf-modules/lambda/scripts/create_pkg.sh
       - ./tf-modules/lambda/scripts/create_pkg.sh eventifyer
-      - ./tf-modules/lambda/scripts/create_pkg.sh ingester
-      - ./tf-modules/lambda/scripts/create_pkg.sh tester
+      - ./tf-modules/lambda/scripts/create_pkg.sh batchingester
+      - ./tf-modules/lambda/scripts/create_pkg.sh streamingingester
       - echo Initiating Terraform...
       - terraform init
       - echo Validating terraform...

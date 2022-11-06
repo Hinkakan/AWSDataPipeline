@@ -38,6 +38,3 @@ phases:
     - echo Deploying terraform infrastructure...
     - terraform apply -auto-approve
       
-
-
-  

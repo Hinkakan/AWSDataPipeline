@@ -52,6 +52,7 @@ def write_to_db(rds_client, payload):
 
 def handler(event, context):
 
+    logger.info(f"Received message: {event}")
     # Parse out data from message
     payload = event["Messages"][0]["Body"]
     # Create dict from payload string

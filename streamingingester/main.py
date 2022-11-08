@@ -55,10 +55,7 @@ def handler(event, context):
 
     logger.info(f"Received message: {event}")
     # Parse out data from message
-    payload = event["Records"][0]["body"]
-    print(payload)
-    # Create dict from payload string
-    payload = json.loads(payload)
+    payload = json.loads(event["Records"][0]["body"])[0]
     # Add timestamp
     ts = event["Records"][0]["messageAttributes"]["_MessageSent"]["stringValue"]
     payload["_MessageSent"] = ts

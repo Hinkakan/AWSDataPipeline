@@ -10,3 +10,4 @@ def test_file_downloaded
 # Sæt til trigger på "master"
 
 # lav tests og læg til "buildspec_test" at køre tests
+

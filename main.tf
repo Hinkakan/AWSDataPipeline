@@ -12,7 +12,7 @@ terraform {
 
   backend "s3" {
     bucket = "hinkakanterraformbackend"
-    key = "awsdatapipeline"
+    key    = "awsdatapipeline"
     region = "eu-central-1"
   }
 }
@@ -24,13 +24,13 @@ provider "aws" {
 
 # CREATE S3 BUCKET
 resource "aws_s3_bucket" "stagingBucket" {
-  bucket        = "stagingbucket010001"
+  bucket        = "stagingbucket010001_${terraform.workspace}"
   force_destroy = true
 }
 
 # CREATE SQS QUEUE
 resource "aws_sqs_queue" "PipelineSQSQueue" {
-  name                       = "PipelineSQSQueue"
+  name                       = "PipelineSQSQueue_${terraform.workspace}"
   visibility_timeout_seconds = 60
   message_retention_seconds  = 3600
   receive_wait_time_seconds  = 10
@@ -39,7 +39,7 @@ resource "aws_sqs_queue" "PipelineSQSQueue" {
 ### GENERIC LAMBDA LOGGING POLICY
 # Role for sending logs
 resource "aws_iam_policy" "function_logging_policy" {
-  name = "lambda_function_logging_policy"
+  name = "lambda_function_logging_policy_${terraform.workspace}"
   policy = jsonencode({
     Version : "2012-10-17",
     Statement : [
@@ -58,33 +58,33 @@ resource "aws_iam_policy" "function_logging_policy" {
 ### CREATE SERVERLESS AURORA RDS ###
 
 module "aurora_rds" {
-  source = ".\\tf-modules\\AuroraServerless"
-  cluster_identifier = "aurorapostgres"
-  database_name = "pipelinedb"
-  master_username = "bjarki"
+  source             = ".\\tf-modules\\AuroraServerless"
+  cluster_identifier = "aurorapostgres${terraform.workspace}"
+  database_name      = "pipelinedb"
+  master_username    = "bjarki"
 }
 
 ### CREATE EVENTIFYER LAMBDA
 
 # Role policy
 resource "aws_iam_policy" "eventifyer_role_policy" {
-  name = "eventifyer_role_policy"
+  name = "eventifyer_role_policy_${terraform.workspace}"
   policy = jsonencode({
-    Version: "2012-10-17",
-    Statement: [
+    Version : "2012-10-17",
+    Statement : [
       {
-        Action: [
+        Action : [
           "s3:GetObject"
         ],
-        Effect: "Allow"
-        Resource: "${aws_s3_bucket.stagingBucket.arn}/*"
+        Effect : "Allow"
+        Resource : "${aws_s3_bucket.stagingBucket.arn}/*"
       },
       {
-        Action: [
+        Action : [
           "sqs:SendMessage"
         ],
-        Effect: "Allow",
-        Resource: "${aws_sqs_queue.PipelineSQSQueue.arn}"
+        Effect : "Allow",
+        Resource : "${aws_sqs_queue.PipelineSQSQueue.arn}"
       }
     ]
   })
@@ -95,9 +95,9 @@ module "eventifyer_lambda" {
   #   aws_iam_policy.eventifyer_role_policy
   # ]
   #### This breaks the data.archive thing
-  source = "./tf-modules/lambda"
-  functionName = "eventifyer"
-  FunctionRolePolicyArn = aws_iam_policy.eventifyer_role_policy.arn
+  source                   = "./tf-modules/lambda"
+  functionName             = "eventifyer_${terraform.workspace}"
+  FunctionRolePolicyArn    = aws_iam_policy.eventifyer_role_policy.arn
   FunctionLoggingPolicyArn = aws_iam_policy.function_logging_policy.arn
   EnvironmentVars = {
     queue_url = aws_sqs_queue.PipelineSQSQueue.url
@@ -106,10 +106,10 @@ module "eventifyer_lambda" {
 
 # Bucket notification trigger for lambda
 resource "aws_lambda_permission" "notification_permission" {
-  action = "lambda:InvokeFunction"
+  action        = "lambda:InvokeFunction"
   function_name = module.eventifyer_lambda.lambda_function_name
-  principal = "s3.amazonaws.com"
-  source_arn = aws_s3_bucket.stagingBucket.arn
+  principal     = "s3.amazonaws.com"
+  source_arn    = aws_s3_bucket.stagingBucket.arn
 }
 
 resource "aws_s3_bucket_notification" "bucket_notification" {
@@ -117,7 +117,7 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
 
   lambda_function {
     lambda_function_arn = module.eventifyer_lambda.lambda_arn
-    events = ["s3:ObjectCreated:*"]
+    events              = ["s3:ObjectCreated:*"]
   }
 
   depends_on = [
@@ -129,7 +129,7 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
 ### CREATE BATCHINGESTER LAMBDA
 
 # resource "aws_iam_policy" "batchingester_role_policy" {
-#   name = "batchingester_role_policy"
+#   name = "batchingester_role_policy_${terraform.workspace}"
 #   policy = jsonencode({
 #     Version: "2012-10-17",
 #     Statement: [
@@ -148,7 +148,7 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
 
 # module "batchingester_lambda" {
 #   source = "./tf-modules/lambda"
-#   functionName = "batchingester"
+#   functionName = "batchingester_${terraform.workspace}"
 #   FunctionRolePolicyArn = aws_iam_policy.batchingester_role_policy.arn
 #   FunctionLoggingPolicyArn = aws_iam_policy.function_logging_policy.arn
 #   EnvironmentVars = {
@@ -177,45 +177,45 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
 ## CREATE STREAMINGINGESTER LAMBDA
 
 resource "aws_iam_policy" "streamingingester_role_policy" {
-  name = "streamingingester_role_policy"
+  name = "streamingingester_role_policy_${terraform.workspace}"
   policy = jsonencode({
-    Version: "2012-10-17",
-    Statement: [
+    Version : "2012-10-17",
+    Statement : [
       {
-        Action: [
+        Action : [
           "sqs:ReceiveMessage",
           "sqs:DeleteMessage",
           "sqs:GetQueueAttributes"
         ],
-        Effect: "Allow",
-        Resource: "${aws_sqs_queue.PipelineSQSQueue.arn}"
+        Effect : "Allow",
+        Resource : "${aws_sqs_queue.PipelineSQSQueue.arn}"
       }
     ]
-  })  
+  })
 }
 
 module "streamingingester_lambda" {
-  source = "./tf-modules/lambda"
-  functionName = "streamingingester"
-  FunctionRolePolicyArn = aws_iam_policy.streamingingester_role_policy.arn
+  source                   = "./tf-modules/lambda"
+  functionName             = "streamingingester_${terraform.workspace}"
+  FunctionRolePolicyArn    = aws_iam_policy.streamingingester_role_policy.arn
   FunctionLoggingPolicyArn = aws_iam_policy.function_logging_policy.arn
   EnvironmentVars = {
-    queue_url = aws_sqs_queue.PipelineSQSQueue.url
+    queue_url   = aws_sqs_queue.PipelineSQSQueue.url
     cluster_arn = module.aurora_rds.cluster_arn
-    secret_arn = module.aurora_rds.secret_arn
+    secret_arn  = module.aurora_rds.secret_arn
   }
 }
 
 # Add trigger to the Lambda
 resource "aws_lambda_event_source_mapping" "streamingingester_sqs_trigger" {
   event_source_arn = aws_sqs_queue.PipelineSQSQueue.arn
-  function_name = module.streamingingester_lambda.lambda_function_name
-  batch_size = 1
+  function_name    = module.streamingingester_lambda.lambda_function_name
+  batch_size       = 1
 }
 
 # Attach policy to lambda role that allows the use of DataApi from RDS cluster
 resource "aws_iam_role_policy_attachment" "DataAPIRolePolicyAttachmentStreamingIngester" {
-  role = module.streamingingester_lambda.lambda_role_name
+  role       = module.streamingingester_lambda.lambda_role_name
   policy_arn = module.aurora_rds.DataAPIRolePolicyArn
 }
 

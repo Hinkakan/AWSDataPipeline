@@ -24,7 +24,7 @@ provider "aws" {
 
 # CREATE S3 BUCKET
 resource "aws_s3_bucket" "stagingBucket" {
-  bucket        = "stagingbucket010001_${terraform.workspace}"
+  bucket        = "stagingbucket010001${terraform.workspace}"
   force_destroy = true
 }
 

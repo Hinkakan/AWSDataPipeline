@@ -12,3 +12,8 @@ variable "master_username" {
   description = "User name for the cluster master user"
   type = string
 }
+
+variable "secret_name" {
+  description = "name of the cluster secret"
+  type = string
+}

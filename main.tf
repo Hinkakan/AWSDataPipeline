@@ -62,6 +62,7 @@ module "aurora_rds" {
   cluster_identifier = "aurorapostgres${terraform.workspace}"
   database_name      = "pipelinedb"
   master_username    = "bjarki"
+  secret_name        = "dbsecret_${terraform.workspace}"
 }
 
 ### CREATE EVENTIFYER LAMBDA

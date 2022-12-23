@@ -7,31 +7,31 @@ resource "random_password" "password" {
 
 # Create Serverless Aurora cluster
 resource "aws_rds_cluster" "rdsCluster" {
-  cluster_identifier = var.cluster_identifier
-  apply_immediately = true
+  cluster_identifier      = var.cluster_identifier
+  apply_immediately       = true
   backup_retention_period = 1
-  database_name = var.database_name
-  engine = "aurora-postgresql"
-  engine_mode = "serverless"
-  enable_http_endpoint = true
+  database_name           = var.database_name
+  engine                  = "aurora-postgresql"
+  engine_mode             = "serverless"
+  enable_http_endpoint    = true
   #engine_version = "14"
-  master_username = var.master_username #"bjarki"
-  master_password = random_password.password.result
+  master_username     = var.master_username #"bjarki"
+  master_password     = random_password.password.result
   skip_final_snapshot = true
 
   scaling_configuration {
-    auto_pause = true
-    min_capacity = 2
-    max_capacity = 2
+    auto_pause               = true
+    min_capacity             = 2
+    max_capacity             = 2
     seconds_until_auto_pause = 300
-    timeout_action = "ForceApplyCapacityChange"
+    timeout_action           = "ForceApplyCapacityChange"
   }
 }
 
 # Create password secret
 resource "aws_secretsmanager_secret" "dbsecret" {
-  name = "dbsecret"
-  recovery_window_in_days = 0
+  name                           = var.secret_name
+  recovery_window_in_days        = 0
   force_overwrite_replica_secret = true
 }
 
@@ -39,12 +39,12 @@ resource "aws_secretsmanager_secret" "dbsecret" {
 resource "aws_secretsmanager_secret_version" "dbsecretversion" {
   secret_id = aws_secretsmanager_secret.dbsecret.id
   secret_string = jsonencode({
-    "engine": "postgres",
-    "host": "${aws_rds_cluster.rdsCluster.endpoint}",
-    "username": "${aws_rds_cluster.rdsCluster.master_username}",
-    "password": "${random_password.password.result}",
-    "dbname": "${aws_rds_cluster.rdsCluster.database_name}",
-    "port": "${aws_rds_cluster.rdsCluster.port}"
+    "engine" : "postgres",
+    "host" : "${aws_rds_cluster.rdsCluster.endpoint}",
+    "username" : "${aws_rds_cluster.rdsCluster.master_username}",
+    "password" : "${random_password.password.result}",
+    "dbname" : "${aws_rds_cluster.rdsCluster.database_name}",
+    "port" : "${aws_rds_cluster.rdsCluster.port}"
   })
 }
 
@@ -71,6 +71,6 @@ data "aws_iam_policy_document" "DataAPIRolePolicyDoc" {
 }
 
 resource "aws_iam_policy" "DataAPIRolePolicy" {
-  name = "DataAPIRolePolicy"
+  name   = "DataAPIRolePolicy"
   policy = data.aws_iam_policy_document.DataAPIRolePolicyDoc.json
 }

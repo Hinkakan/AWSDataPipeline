@@ -1,0 +1,1 @@
+tf-modules/lambda/scripts/create_pkg.sh eventifyer %1 && tf-modules/lambda/scripts/create_pkg.sh batchingester %1 && tf-modules/lambda/scripts/create_pkg.sh streamingingester %1

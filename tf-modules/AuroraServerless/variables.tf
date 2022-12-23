@@ -17,3 +17,8 @@ variable "secret_name" {
   description = "name of the cluster secret"
   type = string
 }
+
+variable "DataAPI_role_policy_name" {
+  type = string
+  description = "Name of the role policy for the DataAPI"
+}

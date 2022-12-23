@@ -58,11 +58,12 @@ resource "aws_iam_policy" "function_logging_policy" {
 ### CREATE SERVERLESS AURORA RDS ###
 
 module "aurora_rds" {
-  source             = ".\\tf-modules\\AuroraServerless"
-  cluster_identifier = "aurorapostgres${terraform.workspace}"
-  database_name      = "pipelinedb"
-  master_username    = "bjarki"
-  secret_name        = "dbsecret_${terraform.workspace}"
+  source                   = ".\\tf-modules\\AuroraServerless"
+  cluster_identifier       = "aurorapostgres${terraform.workspace}"
+  database_name            = "pipelinedb"
+  master_username          = "bjarki"
+  secret_name              = "dbsecret_${terraform.workspace}"
+  DataAPI_role_policy_name = "DataAPIRolePolicy_${terraform.workspace}"
 }
 
 ### CREATE EVENTIFYER LAMBDA

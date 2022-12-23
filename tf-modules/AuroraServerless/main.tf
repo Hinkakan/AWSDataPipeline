@@ -71,6 +71,6 @@ data "aws_iam_policy_document" "DataAPIRolePolicyDoc" {
 }
 
 resource "aws_iam_policy" "DataAPIRolePolicy" {
-  name   = "DataAPIRolePolicy"
+  name   = var.DataAPI_role_policy_name
   policy = data.aws_iam_policy_document.DataAPIRolePolicyDoc.json
 }

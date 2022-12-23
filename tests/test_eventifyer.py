@@ -2,7 +2,6 @@
 
 def test_file_downloaded
 
-
 # ændre CodeBuild til at tage buildspec_test filen
 # ændre CodeBuild til at triggere på "staging" branch
 
